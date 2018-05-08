@@ -3,16 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPLS Ping</title>
+    <title>MPLS Tools</title>
 </head>
-    <body>
-
-        <form action="index.html" method="post">
-
-            <h1>MPLS ping command</h1>
-
-            <fieldset>
-                <legend>Path information</legend>
+<body>
+    <form action="index.html" method="post">
+    <h1>MPLS tools</h1>
+        <fieldset>
+            <legend>Path information</legend>
                 <label for="aside">A side:</label>
                 <input type="text" id="aside" name="aside">
                 <br />
@@ -22,35 +19,35 @@
                 <label for="pseudowire">PW ID:</label>
                 <input type="text" id="pseudowire" name="pseudowire">
                 <br />
+        </fieldset> 
 
-            </fieldset>
+                <button id="formSubmit" type="submit">Ping command A to Z</button><span> ---Ping across the path</span> <br>
+                <button id="submitReverse" type="submit">Ping command Z to A</button><span> ---Ping across the reverse path</span><br>
+                <button id="submitAlcatel" type="submit">Alcatel Z to Cisco A</button><span> ---Use this if your Z side device is an Alcatel (Note: This is not always accurate as the pings may deviate from the MPLS path.)</span> <br>
+                <button id="submitTrace" type="submit">MPLS Trace</button><span> ---Automatically trace the MPLS path from A side to Z side<span> <br>
+                <button id="submitForwarding" type="submit">MPLS Forwarding</button><span> ---Use this to find the next hop in the MPLS path to trace manually</span> <br>
+                    <h1>Command output:</h1><br> 
+                        <output name="result"> </output> <br>
+                        <output name="reverse"> </output> <br />
+                        <output name="trace"></output> <br>
+                        <output name="forwarding"></output> <br>
+                        <output name="alcatel"></output><br>
 
-            <button id="formSubmit" type="submit">Get Command</button>
-
-            <br />
-            
-            <button id="submitReverse" type="submit">Reverse Path</button>
-            <br />
-            <br />
-            <output name="result"> </output> <br>
-
-            <output name="reverse"> </output> <br />
-
-
-
-        </form>
+    </form>
       
-        <script>
+<script>
             document.getElementById('formSubmit').onclick = result;
             document.getElementById('submitReverse').onclick = reverse;
-
+            document.getElementById('submitTrace').onclick = trace;
+   document.getElementById('submitForwarding').onclick = forwarding;
+   document.getElementById('submitAlcatel').onclick = alcatel;
             function result(event) {
                 event.preventDefault();
                 var aside = document.getElementById( 'aside').value;
                 var zside = document.getElementById( 'zside').value;
                 var pseudowire = document.getElementById('pseudowire').value;
                 console.log(aside, zside, pseudowire);
-                document.querySelector('output').innerHTML = 'ping mpls pseudowire ipv4 ' + aside + ' ' + pseudowire + ' source ' + zside + ' size 1500 repeat 100';
+                document.querySelector('output').innerHTML = 'ping mpls pseudowire ' + zside + ' ' + pseudowire + ' source ' + aside + ' size 1500 repeat 100 interval 10';
             }
             function reverse(event) {
                 event.preventDefault();
@@ -58,8 +55,27 @@
                 var zside = document.getElementById('zside').value;
                 var pseudowire = document.getElementById('pseudowire').value;
                 console.log(aside, zside, pseudowire);
-                document.querySelector('output').innerHTML = 'ping mpls pseudowire ipv4 ' + zside + ' ' + pseudowire + ' source ' + aside + ' size 1500 repeat 100';
+  document.querySelector('output').innerHTML = 'ping mpls pseudowire ' + aside + ' ' + pseudowire + ' source ' + zside + ' size 1500 repeat 100 interval 10';
             }
+            function trace(event) {
+                event.preventDefault();
+                var aside = document.getElementById('aside').value;
+                var zside = document.getElementById('zside').value;
+                console.log(aside, zside);
+  document.querySelector('output').innerHTML = 'traceroute ' + zside + ' ' + ' source ' + aside;
+            }
+            function forwarding(event) {
+                 event.preventDefault();
+                 var zside = document.getElementById('zside').value;
+                 console.log(zside);
+                 document.querySelector('output').innerHTML = 'show mpls forwarding prefix ' + zside + '/32 ';
+             } 
+    function alcatel(event) {
+    event.preventDefault();
+    var aside = document.getElementById('aside').value;
+                var zside = document.getElementById('zside').value;
+    document.querySelector('output').innerHTML = 'ping rapid ' + aside + ' source' + zside + ' size 1500 count 100 interval 10'
+    }
         </script>
     </body>
 </html>
