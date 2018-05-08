@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPLS Ping</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link href='http://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+    <body>
+
+        <form action="index.html" method="post">
+
+            <h1>MPLS ping command</h1>
+
+            <fieldset>
+                <legend><span class="number">1</span>Path information</legend>
+                <label for="aside">A side:</label>
+                <input type="text" id="aside" name="aside">
+
+                <label for="zside">Z side:</label>
+                <input type="text" id="zside" name="zside">
+
+                <label for="pseudowire">Pseudowire ID:</label>
+                <input type="text" id="pseudowire" name="pseudowire">
+
+
+            </fieldset>
+
+            <button id="formSubmit" type="submit">Get Command</button>
+
+            
+            <button id="submitReverse" type="submit">Reverse Path</button>
+            <br />
+            <br />
+            <output name="result"> </output> <br>
+
+            <output name="reverse"> </output> <br />
+
+
+
+        </form>
+      
+        <script>
+            document.getElementById('formSubmit').onclick = result;
+            document.getElementById('submitReverse').onclick = reverse;
+
+            function result(event) {
+                event.preventDefault();
+                var aside = document.getElementById( 'aside').value;
+                var zside = document.getElementById( 'zside').value;
+                var pseudowire = document.getElementById('pseudowire').value;
+                console.log(aside, zside, pseudowire);
+                document.querySelector('output').innerHTML = 'ping mpls pseudowire ipv4 ' + aside + ' ' + pseudowire + ' source ' + zside + ' size 1500 repeat 100';
+            }
+            function reverse(event) {
+                event.preventDefault();
+                var aside = document.getElementById('aside').value;
+                var zside = document.getElementById('zside').value;
+                var pseudowire = document.getElementById('pseudowire').value;
+                console.log(aside, zside, pseudowire);
+                document.querySelector('output').innerHTML = 'ping mpls pseudowire ipv4 ' + zside + ' ' + pseudowire + ' source ' + aside + ' size 1500 repeat 100';
+            }
+        </script>
+    </body>
+</html>
