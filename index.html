@@ -6,34 +6,47 @@
     <title>MPLS Tools</title>
 </head>
 <body>
-    <form action="index.html" method="post">
-    <h1>MPLS Command Generator</h1>
-        <fieldset>
-            <legend>Path information</legend>
-                <label for="aside">A side:</label>
-                <input type="text" id="aside" name="aside">
-                <br />
-                <label for="zside">Z side:</label>
-                <input type="text" id="zside" name="zside">
-                <br />
-                <label for="pseudowire">PW ID:</label>
-                <input type="text" id="pseudowire" name="pseudowire">
-                <br />
-        </fieldset> 
+<p>If you know the customer's vlan, you can use that to locate the subinterface that the xconnect is built on, then, using that subinterface, you can get the pseudowire info. <br />
+To get the information needed to fill out this template, you will need to first find the xconnect information, this can be done by showing all xconnects and locating your customer's vlan/subinterface, or narrowing it down by pseudowire ID or subinterface.</p>
+<br />
+<img src="https://i.imgur.com/gKbtZaW.png" title="xconnect info" />
+<br />
+<p>With this output, we can see that the Z side of the circuit is at 96.34.238.66 and the pseudowire ID is 100227708. Now we need the loopback 14 address of our A side acr.</p>
+<br />
+<img src="https://i.imgur.com/BmUZKEl.png" title="Loopback 14" />
+<br />
+<p>After running this command, we now have the A side ip as 96.34.236.150 and have the information we need to be able to use the command generator!</p>
+<br />
+<br />
+<form action="index.html" method="post">
+<h1>MPLS Command Generator</h1>
+<fieldset>
+<legend>Path information</legend>
+<label for="aside">A side:</label>
+<input type="text" id="aside" name="aside">
+<br />
+<label for="zside">Z side:</label>
+<input type="text" id="zside" name="zside">
+<br />
+<label for="pseudowire">PW ID:</label>
+<input type="text" id="pseudowire" name="pseudowire">
+<br />
+</fieldset> 
 
-                <button id="formSubmit" type="submit">Ping command A to Z</button><span> ---Ping across the path</span> <br>
-                <button id="submitReverse" type="submit">Ping command Z to A</button><span> ---Ping across the reverse path</span><br>
-                <button id="submitAlcatel" type="submit">Alcatel Z to Cisco A</button><span> ---Use this if your Z side device is an Alcatel (Note: This is not always accurate as the pings may deviate from the MPLS path.)</span> <br>
-                <button id="submitTrace" type="submit">MPLS Trace</button><span> ---Automatically trace the MPLS path from A side to Z side<span> <br>
-                <button id="submitForwarding" type="submit">MPLS Forwarding</button><span> ---Use this to find the next hop in the MPLS path to trace manually</span> <br>
-                    <h1>Command output:</h1><br> 
-                        <output name="result"> </output> <br>
-                        <output name="reverse"> </output> <br />
-                        <output name="trace"></output> <br>
-                        <output name="forwarding"></output> <br>
-                        <output name="alcatel"></output><br>
 
-    </form>
+<button id="formSubmit" type="submit">Ping command A to Z</button><span> ---Ping across the path</span> <br>
+<button id="submitReverse" type="submit">Ping command Z to A</button><span> ---Ping across the reverse path</span><br>
+<button id="submitAlcatel" type="submit">Alcatel Z to Cisco A</button><span> ---Use this if your Z side device is an Alcatel (Note: This is not always accurate as the pings may deviate from the MPLS path.)</span> <br>
+<button id="submitTrace" type="submit">MPLS Trace</button><span> ---Automatically trace the MPLS path from A side to Z side<span> <br>
+<button id="submitForwarding" type="submit">MPLS Forwarding</button><span> ---Use this to find the next hop in the MPLS path to trace manually</span> <br>
+<h1>Command output:</h1><br> 
+<output name="result"> </output> <br>
+<output name="reverse"> </output> <br />
+<output name="trace"></output> <br>
+<output name="forwarding"></output> <br>
+<output name="alcatel"></output><br>
+
+</form>
       
 <script>
             document.getElementById('formSubmit').onclick = result;
@@ -74,7 +87,7 @@
     event.preventDefault();
     var aside = document.getElementById('aside').value;
                 var zside = document.getElementById('zside').value;
-    document.querySelector('output').innerHTML = 'ping rapid ' + aside + ' source' + zside + ' size 1500 count 100 interval 10'
+    document.querySelector('output').innerHTML = 'ping rapid ' + aside + ' source ' + zside + ' size 1500 count 100 interval 10'
     }
         </script>
     </body>
